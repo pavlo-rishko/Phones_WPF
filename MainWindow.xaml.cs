@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,17 +19,19 @@ namespace Phones_WPF
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
+    /// </summary>easddz
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            
+            OleDbConnection StrCon = new OleDbConnection(@"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=D:\Exp;Extended Properties=text");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -55,7 +58,7 @@ namespace Phones_WPF
         int Price { get; set; }
     }
 
-    class MobilePhone : ArrayHandler, IPhone
+    class MobilePhone : IPhone
     {
         string name, firm, colour;
         int price, memoryCapacity;
@@ -78,7 +81,7 @@ namespace Phones_WPF
         public int MemoryCapacity { get; set; }
     }
 
-    class RadioPhone : ArrayHandler, IPhone
+    class RadioPhone : IPhone
     {
         string name, firm;
         int price, reach;
@@ -124,5 +127,6 @@ namespace Phones_WPF
 
 
     //}
+
 
 }
