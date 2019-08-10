@@ -1,21 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.OleDb;
 using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Phones_WPF
 {
@@ -26,7 +16,11 @@ namespace Phones_WPF
     {
         public MainWindow()
         {
+
             InitializeComponent();
+            button1.IsEnabled = false;
+            button2.IsEnabled = false;
+
 
         }
         txtFileHandler firms = new txtFileHandler();
@@ -35,30 +29,38 @@ namespace Phones_WPF
             
             firms.ReadFromTXTWriteToArray(@"C:\Users\Odmen\Desktop\Firm_A.txt", @"C:\Users\Odmen\Desktop\Firm_B.txt");
             
-            string output = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, "fds");
+            string output = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, false);
             textBox1.Text = output;
 
             using (StreamWriter sw = new StreamWriter(@"C:\Users\Odmen\Desktop\New.txt", false, Encoding.Default))
             {
                 sw.WriteLine(output);
             }
-
+            button1.IsEnabled = true;
+            button2.IsEnabled = true;
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            
+            firms.PutVariousValuesToOneArray(firms.mobilePhones, firms.radioPhones);
+            var sorted = firms.PutVariousValuesToOneArray(firms.mobilePhones,
+                                     firms.radioPhones).OrderBy(p => p.Price);
+            foreach (var i in sorted)
+            {
+                Console.WriteLine();
+            }
+
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            textBox1.Text = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, "onlyRadioPhones");
+            textBox1.Text = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, true);
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //((TextBox)sender).SelectionLength = 0;
+           
         }
     }
 
@@ -159,31 +161,53 @@ namespace Phones_WPF
 
             return (mobilePhones, radioPhones);
         }
-        public string OutputArrayValues(MobilePhone[] a , RadioPhone[] b, string c)
+        public string OutputArrayValues(MobilePhone[] mobilesArray , RadioPhone[] radiosArray, bool onlyRadioPhones)// если значение true, то выводит только радиотелефоны
         {
             string output = "";
 
             int countMobilePhone = 0;
             int countRadioPhone = 0;
             //Перебор масивов для вывода 
-            if (c == "onlyRadioPhones")
+            if (onlyRadioPhones == true)
             { goto onlyRadioPhones; }
             output = "Mobile phones: \n";
-            foreach (var i in a)
+            foreach (var i in mobilesArray)
             {
                 output += $"{i.Name}. {i.Firm} {i.Price} {i.Colour} {i.MemoryCapacity}\n";
                 countMobilePhone++;
             }
             onlyRadioPhones:
             output += "Radio phones: \n";
-            foreach (var i in b)
+            foreach (var i in radiosArray)
             {
                 output += $"{i.Name}. {i.Firm} {i.Price} {i.Reach} {i.AnswerPhone}\n";
                 countRadioPhone++;
             }
             return output;
         }
-    } 
+        public List<IPhone> PutVariousValuesToOneArray(MobilePhone[] mobiles, RadioPhone[] radios)
+        {
+            List<IPhone> mainList = new List<IPhone>();
+            //ArrayList mainList = new ArrayList();
+            foreach (var mobs in mobiles)
+            {
+                mainList.Add(mobs);
+            }
+            foreach (var rad in radios)
+            {
+                mainList.Add(rad);
+            }
+
+            foreach(var i in mainList)
+            {
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            return mainList;
+            
+        }
+    }
+
 
 
 }
