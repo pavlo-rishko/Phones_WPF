@@ -31,12 +31,7 @@ namespace Phones_WPF
             
             string output = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, false);
             textBox1.Text = output;
-
-            using (StreamWriter sw = new StreamWriter(@"C:\Users\Odmen\Desktop\New.txt", false, Encoding.Default))
-            {
-                sw.WriteLine(output);
-            }
-            button1.IsEnabled = true;
+            
             button2.IsEnabled = true;
 
         }
@@ -46,16 +41,46 @@ namespace Phones_WPF
             firms.PutVariousValuesToOneArray(firms.mobilePhones, firms.radioPhones);
             var sorted = firms.PutVariousValuesToOneArray(firms.mobilePhones,
                                      firms.radioPhones).OrderBy(p => p.Price);
-            foreach (var i in sorted)
-            {
-                Console.WriteLine();
+            
+            textBox1.Clear();
+            int totalPrice = 0;
+            using (StreamWriter sw = new StreamWriter(@"C:\Users\Odmen\Desktop\New.txt", false, Encoding.Default))
+            {                
+
+                foreach (var a in sorted)
+                {
+                    if (a.Name.Contains("Mobile"))
+                    {
+                        MobilePhone i = (MobilePhone)a;
+                        textBox1.AppendText($"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}\n");
+                        totalPrice += i.Price;
+                        sw.WriteLine($"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}");
+                    }
+                    else
+                    {
+                        RadioPhone i = (RadioPhone)a;
+                        textBox1.AppendText($"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.AnswerPhone}  Price: {i.Price}\n");
+                        totalPrice += i.Price;
+                        sw.WriteLine($"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.AnswerPhone}  Price: {i.Price}");
+                    }
+                }
+                textBox1.AppendText("Total price: " + Convert.ToString(totalPrice));
+                sw.WriteLine("Total price: " + Convert.ToString(totalPrice));
             }
+            button1.IsEnabled = true;
 
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            textBox1.Text = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, true);
+            string output = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, true);
+            textBox1.Text = output;
+            using (StreamWriter sw = new StreamWriter(@"C:\Users\Odmen\Desktop\New.txt", true))
+            {
+                sw.Write(output);
+            }
+            button2.IsEnabled = false;
+            button1.IsEnabled = false;
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
