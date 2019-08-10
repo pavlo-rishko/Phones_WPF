@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Phones_WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="200" Width="600" Background= "Silver">
+        Title="Phones" Height="212.955" Width="600" Background= "Silver" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="0,0,12,260">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="9*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Зчитати дані" HorizontalAlignment="Left" Height="36" Margin="97,18,0,-54" VerticalAlignment="Top" Width="157" Grid.Column="1" Click="Button_Click"/>
-        <Button Content="Сортувати по ціні" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="97,73,0,-103" VerticalAlignment="Top" Width="157" Click="Button_Click_1"/>
-        <Button Content="Вивести радіотелефони" Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="97,121,0,-151" VerticalAlignment="Top" Width="157" Click="Button_Click_2"/>
-        <TextBox Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="133" Margin="19,18,0,-151" TextWrapping="Wrap" VerticalAlignment="Top" Width="378" TextChanged="TextBox_TextChanged"/>
+        <Button Content="Сортувати по ціні" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="97,66,0,-102" VerticalAlignment="Top" Width="157" Click="Button_Click_1"/>
+        <Button Content="Вивести радіотелефони" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="97,115,0,-151" VerticalAlignment="Top" Width="157" Click="Button_Click_2"/>
+        <TextBox x:Name="textBox1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="133" Margin="14,18,0,-151" TextWrapping="Wrap" VerticalAlignment="Top" Width="389" TextChanged="TextBox_TextChanged" VerticalScrollBarVisibility="Visible"/>
 
 
 
