@@ -24,58 +24,39 @@ namespace Phones_WPF
 
         }
         txtFileHandler firms = new txtFileHandler();
+        List<IPhone> arrayWithAllPhones;
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             
-            firms.ReadFromTXTWriteToArray(@"C:\Users\Odmen\Desktop\Firm_A.txt", @"C:\Users\Odmen\Desktop\Firm_B.txt");
-            
-            string output = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, false);
-            textBox1.Text = output;
-            
+            arrayWithAllPhones = firms.ReadFromTXTWriteToArray(@"C:\Firm_A.txt", @"C:\Firm_B.txt");
+
+            textBox1.Text = firms.CreateStringToOutputAllPhones(arrayWithAllPhones);
+
             button2.IsEnabled = true;
 
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            firms.PutVariousValuesToOneArray(firms.mobilePhones, firms.radioPhones);
-            var sorted = firms.PutVariousValuesToOneArray(firms.mobilePhones,
-                                     firms.radioPhones).OrderBy(p => p.Price);
-            
+            var sorted = arrayWithAllPhones.OrderBy(p => p.Price);//сортировка по цене
             textBox1.Clear();
-            int totalPrice = 0;
-            using (StreamWriter sw = new StreamWriter(@"C:\Users\Odmen\Desktop\New.txt", false, Encoding.Default))
-            {                
+            string output = firms.CreateStringWithAllPhonesSortedByPrice(sorted);
+            textBox1.Text = output;
 
-                foreach (var a in sorted)
-                {
-                    if (a.Name.Contains("Mobile"))
-                    {
-                        MobilePhone i = (MobilePhone)a;
-                        textBox1.AppendText($"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}\n");
-                        totalPrice += i.Price;
-                        sw.WriteLine($"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}");
-                    }
-                    else
-                    {
-                        RadioPhone i = (RadioPhone)a;
-                        textBox1.AppendText($"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.AnswerPhone}  Price: {i.Price}\n");
-                        totalPrice += i.Price;
-                        sw.WriteLine($"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.AnswerPhone}  Price: {i.Price}");
-                    }
-                }
-                textBox1.AppendText("Total price: " + Convert.ToString(totalPrice));
-                sw.WriteLine("Total price: " + Convert.ToString(totalPrice));
+            using (StreamWriter sw = new StreamWriter(@"C:\New.txt", false, Encoding.Default))
+            {
+                sw.Write(output);
             }
-            button1.IsEnabled = true;
 
+            button2.IsEnabled = false;
+            button1.IsEnabled = true;
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            string output = firms.OutputArrayValues(firms.mobilePhones, firms.radioPhones, true);
+            string output = firms.CreateStringRadioPhonesWithAnswerphone(arrayWithAllPhones);
             textBox1.Text = output;
-            using (StreamWriter sw = new StreamWriter(@"C:\Users\Odmen\Desktop\New.txt", true))
+            using (StreamWriter sw = new StreamWriter(@"C:\New.txt", true))
             {
                 sw.Write(output);
             }
@@ -120,13 +101,13 @@ namespace Phones_WPF
     public class RadioPhone : IPhone
     {
         public RadioPhone() { }
-        public RadioPhone(string Name, string Firm, int Reach, bool AnswerPhone, int Price)
+        public RadioPhone(string Name, string Firm, int Reach, bool Answerphone, int Price)
         {
             this.Name = Name;
             this.Firm = Firm;
             this.Price = Price;
             this.Reach = Reach;
-            this.AnswerPhone = AnswerPhone;
+            this.Answerphone = Answerphone;
         }
 
         public string Name { get; set; }
@@ -134,26 +115,18 @@ namespace Phones_WPF
         public int Price { get; set; }
 
         public int Reach { get; set; }
-        public bool AnswerPhone { get; set; }
+        public bool Answerphone { get; set; }
     }
 
     class txtFileHandler
     {
-        public MobilePhone[] mobilePhones;
-        public RadioPhone[] radioPhones;
-        public (Array,Array) ReadFromTXTWriteToArray(string Path, string Path2)
+        List<IPhone> mainList;
+        public List<IPhone> ReadFromTXTWriteToArray(string Path, string Path2)
         {
             //отдельный масив путей к файлам
             string[] paths = new string[2] { Path, Path2 };
-            //совместное количество строк в путях, для того, чтобы задавать размерность масивов
-            int count = File.ReadAllLines(Path).Length + File.ReadAllLines(Path2).Length; 
-            
-            mobilePhones = new MobilePhone[count];
-            radioPhones = new RadioPhone[count];
 
-            //щетчики ячеек для последовательного заполнения масивов
-            int mobilePhoneCount = 0; 
-            int radioPhoneCount = 0;
+            mainList = new List<IPhone>();
 
             //перебирает сначала txt файл по одному пути, затем по другому
             foreach (string path1 in paths)
@@ -161,78 +134,90 @@ namespace Phones_WPF
                 //записывает все строчки в переменную
                 var lines = File.ReadAllLines(path1);
 
-                //перенорсит данные из файдла в масивы, одновременно сортирует на "Мобильные Телефоны" и "Радиотелефоны"
+                //перенорсит данные из файдла в массив
                 foreach (var line in lines)
                 {
-                    if (line.Split('_')[0] == "Mobile Phone")
+
+                    if (line.Split(',')[3] == "true" || line.Split(',')[3] == "false")
                     {
-                        mobilePhones[mobilePhoneCount] = new MobilePhone(line.Split(',')[0], line.Split(',')[1],
-                        line.Split(',')[2], Convert.ToInt32(line.Split(',')[3]), Convert.ToInt32(line.Split(',')[4]));
-                        mobilePhoneCount++;
+                        mainList.Add(new RadioPhone(line.Split(',')[0], line.Split(',')[1],
+                        Convert.ToInt32(line.Split(',')[2]), Convert.ToBoolean(line.Split(',')[3]),Convert.ToInt32(line.Split(',')[4])));
                     }
-                    if (line.Split('_')[0] == "Radio Phone")
+                    else
                     {
-                        radioPhones[radioPhoneCount] = new RadioPhone(line.Split(',')[0], line.Split(',')[1],
-                        Convert.ToInt32(line.Split(',')[2]), Convert.ToBoolean(line.Split(',')[3]),
-                        Convert.ToInt32(line.Split(',')[4]));
-                        radioPhoneCount++;
+                        mainList.Add(new MobilePhone(line.Split(',')[0], line.Split(',')[1],
+                        line.Split(',')[2], Convert.ToInt32(line.Split(',')[3]), Convert.ToInt32(line.Split(',')[4])));
                     }
                 }
             }
-
-            // перебираем масивы удаляя пустые ячейки
-            mobilePhones = mobilePhones.Where(x => x != null).ToArray();
-            radioPhones = radioPhones.Where(x => x != null).ToArray();
-
-            return (mobilePhones, radioPhones);
+            return mainList;
         }
-        public string OutputArrayValues(MobilePhone[] mobilesArray , RadioPhone[] radiosArray, bool onlyRadioPhones)// если значение true, то выводит только радиотелефоны
-        {
-            string output = "";
-
-            int countMobilePhone = 0;
-            int countRadioPhone = 0;
-            //Перебор масивов для вывода 
-            if (onlyRadioPhones == true)
-            { goto onlyRadioPhones; }
-            output = "Mobile phones: \n";
-            foreach (var i in mobilesArray)
+        public string CreateStringToOutputAllPhones(List<IPhone> mainList)
+        {    
+            //Перебор масивa для вывода(склеивает строку)
+            string output = "All phones: \n";
+            foreach (var a in mainList)
             {
-                output += $"{i.Name}. {i.Firm} {i.Price} {i.Colour} {i.MemoryCapacity}\n";
-                countMobilePhone++;
-            }
-            onlyRadioPhones:
-            output += "Radio phones: \n";
-            foreach (var i in radiosArray)
-            {
-                output += $"{i.Name}. {i.Firm} {i.Price} {i.Reach} {i.AnswerPhone}\n";
-                countRadioPhone++;
+                var variableType = a.GetType();//определяет тип переменной в данной итерации и формирует соответствующую типу строку
+                if (variableType.Name == "MobilePhone")
+                {
+                    MobilePhone i = (MobilePhone)a;
+                    output += $"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}\n";
+                }
+                else
+                {
+                    RadioPhone i = (RadioPhone)a;
+                    output += $"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.Answerphone}  Price: {i.Price}\n";
+                }
             }
             return output;
         }
-        public List<IPhone> PutVariousValuesToOneArray(MobilePhone[] mobiles, RadioPhone[] radios)
-        {
-            List<IPhone> mainList = new List<IPhone>();
-            //ArrayList mainList = new ArrayList();
-            foreach (var mobs in mobiles)
-            {
-                mainList.Add(mobs);
-            }
-            foreach (var rad in radios)
-            {
-                mainList.Add(rad);
-            }
 
-            foreach(var i in mainList)
+        public string CreateStringRadioPhonesWithAnswerphone(List<IPhone> mainList)
+        {
+            string output = "Radio phones with Answerphone: \n";
+            foreach (var a in mainList)
             {
-                Console.WriteLine();
+                var variableType = a.GetType();
+                if (variableType.Name == "RadioPhone") //отделает только радиотелефоны
+                {
+                    RadioPhone i = (RadioPhone)a;
+                    if (i.Answerphone == true) // отделяет только радиотелефоны с автоответчиком
+                    {
+                        output += $"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.Answerphone}  Price: {i.Price}\n";
+                    }
+                }
             }
-            Console.WriteLine();
-            return mainList;
+            return output;
+        }
+
+        public string CreateStringWithAllPhonesSortedByPrice(IOrderedEnumerable<IPhone> sorted)
+        {
+            string output = "All phones sorted by price:\n";
+            int totalPrice = 0;
+
+                foreach (var a in sorted)
+                {
+                    var variableType = a.GetType();
+
+                    if (variableType.Name == "MobilePhone")
+                    {
+                            MobilePhone i = (MobilePhone)a;
+                            output += ($"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} " +
+                                   $"Memory capacity{i.MemoryCapacity}  Price: {i.Price}\n");
+                            totalPrice += i.Price;
+
+                    }
+                    else
+                    {
+                            RadioPhone i = (RadioPhone)a;
+                            output += ($"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} " +
+                                        $"Anserphone: {i.Answerphone}  Price: {i.Price}\n");
+                    }
+                }
+
+                return output + "Total rpice: " + Convert.ToString(totalPrice) + "\n";
             
         }
     }
-
-
-
 }
