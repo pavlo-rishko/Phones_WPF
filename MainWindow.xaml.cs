@@ -24,6 +24,7 @@ namespace Phones_WPF
         }
         txtFileHandler firms = new txtFileHandler();
         List<IPhone> arrayWithAllPhones;
+        string savePath;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
@@ -36,7 +37,7 @@ namespace Phones_WPF
         firstPath:
             MessageBox.Show("Будь ласка вкажіть шлях до 1-го файлу");
 
-            bool? result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog(); 
 
             ///если пользователь указал путь то оно передается в filePath1, в противном случае 
             //пользователю еще раз предлагается указать путь
@@ -83,13 +84,24 @@ namespace Phones_WPF
         {
             //сортировка по цене
             var sorted = arrayWithAllPhones.OrderBy(p => p.Price);
-            //textBox1.Clear();
+
             //вывоз метода который создает строку и затем вывод
             string output = firms.CreateStringWithAllPhonesSortedByPrice(sorted);
             textBox1.Text = output;
 
+            //диалог сохранения файла
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.Filter = "Text documents (*.txt)|*.txt";
+
+            bool? result = dialog.ShowDialog();
+
+            if(result == true)
+            {
+                savePath = dialog.FileName;
+            }
+
             //запись в txt файл
-            using (StreamWriter sw = new StreamWriter(@"C:\New.txt", false, Encoding.Default))
+            using (StreamWriter sw = new StreamWriter(savePath, false, Encoding.Default))
             {
                 sw.Write(output);
             }
@@ -105,7 +117,7 @@ namespace Phones_WPF
             textBox1.Text = output;
 
             //запись в txt файл
-            using (StreamWriter sw = new StreamWriter(@"C:\New.txt", true))
+            using (StreamWriter sw = new StreamWriter(savePath, true))
             {
                 sw.Write(output);
             }
