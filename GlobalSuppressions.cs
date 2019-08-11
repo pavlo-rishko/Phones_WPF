@@ -1,0 +1,30 @@
+﻿// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.MainWindow.#ctor")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.IPhone")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.MobilePhone")]
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.RadioPhone.#ctor(System.String,System.String,System.Int32,System.Boolean,System.Int32)")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.TxtFileHandler.CreateStringRadioPhonesWithAnswerphone(System.Collections.Generic.List{Phones_WPF.IPhone})~System.String")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.TxtFileHandler.CreateStringToOutputAllPhones(System.Collections.Generic.List{Phones_WPF.IPhone})~System.String")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.TxtFileHandler.CreateStringWithAllPhonesSortedByPrice(System.Linq.IOrderedEnumerable{Phones_WPF.IPhone})~System.String")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.TxtFileHandler.ReadFromTXTWriteToArray(System.String,System.String)~System.Collections.Generic.List{Phones_WPF.IPhone}")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~P:Phones_WPF.RadioPhone.Answerphone")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~P:Phones_WPF.RadioPhone.Firm")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~P:Phones_WPF.RadioPhone.Name")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~P:Phones_WPF.RadioPhone.Price")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "member", Target = "~P:Phones_WPF.RadioPhone.Reach")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.RadioPhone")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.TxtFileHandler")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "<Ожидание>", Scope = "member", Target = "~F:Phones_WPF.MainWindow.firms")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.IPhone")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "<Ожидание>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.MobilePhone")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.RadioPhone")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:File may only contain a single type", Justification = "<Ожидание>", Scope = "type", Target = "~T:Phones_WPF.TxtFileHandler")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "<Ожидание>", Scope = "member", Target = "~M:Phones_WPF.TxtFileHandler.ReadFromTXTWriteToArray(System.String,System.String)~System.Collections.Generic.List{Phones_WPF.IPhone}")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1115:Parameter should follow comma", Justification = "<Ожидание>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:Parameter should not span multiple lines", Justification = "<Ожидание>")]
