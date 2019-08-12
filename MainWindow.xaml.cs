@@ -22,23 +22,25 @@ namespace Phones_WPF
             button2.IsEnabled = false;
 
         }
-        txtFileHandler firms = new txtFileHandler();
+
+        readonly TxtFileHandler firms = new TxtFileHandler();
         List<IPhone> arrayWithAllPhones;
         string savePath;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
-            string filePath1 = null;
-            string filePath2 = null;
             //вызываем диалог для выбора текстовых файлов с данными.
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.Filter = "Text documents (*.txt)|*.txt";
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Text documents (*.txt)|*.txt"
+            };
 
         firstPath:
             MessageBox.Show("Будь ласка вкажіть шлях до 1-го файлу");
 
-            bool? result = dialog.ShowDialog(); 
+            bool? result = dialog.ShowDialog();
 
+            string filePath1;
+            string filePath2;
             ///если пользователь указал путь то оно передается в filePath1, в противном случае 
             //пользователю еще раз предлагается указать путь
             if (result == true)
@@ -90,8 +92,10 @@ namespace Phones_WPF
             textBox1.Text = output;
 
             //диалог сохранения файла
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-            dialog.Filter = "Text documents (*.txt)|*.txt";
+            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "Text documents (*.txt)|*.txt"
+            };
 
             bool? result = dialog.ShowDialog();
 
@@ -177,7 +181,7 @@ namespace Phones_WPF
         public bool Answerphone { get; set; }
     }
 
-    class txtFileHandler
+    class TxtFileHandler
     {
         List<IPhone> mainList;
         public List<IPhone> ReadFromTXTWriteToArray(string Path1, string Path2)
