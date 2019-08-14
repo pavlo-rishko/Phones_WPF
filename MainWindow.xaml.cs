@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using Newtonsoft.Json;
 
 namespace Phones_WPF
 {
@@ -20,7 +22,7 @@ namespace Phones_WPF
             //выключаю кнопки
             button1.IsEnabled = false;
             button2.IsEnabled = false;
-
+            button3.IsEnabled = false;
         }
 
         readonly TxtFileHandler firms = new TxtFileHandler();
@@ -35,7 +37,7 @@ namespace Phones_WPF
             };
 
         firstPath:
-            MessageBox.Show("Будь ласка вкажіть шлях до 1-го файлу");
+            MessageBox.Show("Будь ласка вкажіть шлях до 1-го файлу\a");
 
             bool? result = dialog.ShowDialog();
 
@@ -112,6 +114,7 @@ namespace Phones_WPF
 
             button2.IsEnabled = false;
             button1.IsEnabled = true;
+            button3.IsEnabled = true;
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -133,6 +136,18 @@ namespace Phones_WPF
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            string jsonString = JsonConvert.SerializeObject(firms);
+            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(TxtFileHandler));
+
+            using (FileStream cr = new FileStream("firms.json", FileMode.OpenOrCreate))
+            {
+                jsonFormatter.WriteObject(cr, jsonString);
+            }
+            button3.IsEnabled = false;
         }
     }
 
@@ -181,15 +196,22 @@ namespace Phones_WPF
         public bool Answerphone { get; set; }
     }
 
+    [DataContract]
     class TxtFileHandler
     {
-        List<IPhone> mainList;
+        [DataMember]
+        public List<IPhone> MainList { get; set; }
+        [DataMember]
+        public string Output1 { get; set; }
+        [DataMember]
+        public string Output2 { get; set; }
+
         public List<IPhone> ReadFromTXTWriteToArray(string Path1, string Path2)
         {
             //отдельный масив путей к файлам
             string[] paths = new string[2] { Path1, Path2 };
 
-            mainList = new List<IPhone>();
+            MainList = new List<IPhone>();
             int fileCount = 0;
 
             //перебирает сначала txt файл по одному пути, затем по другому
@@ -207,12 +229,12 @@ namespace Phones_WPF
                         //Идентификация а затем и распознавание строки
                         if (line.Split(',')[3] == "true" || line.Split(',')[3] == "false")
                         {
-                            mainList.Add(new RadioPhone(line.Split(',')[0], line.Split(',')[1],
+                            MainList.Add(new RadioPhone(line.Split(',')[0], line.Split(',')[1],
                             Convert.ToInt32(line.Split(',')[2]), Convert.ToBoolean(line.Split(',')[3]), Convert.ToInt32(line.Split(',')[4])));
                         }
                         else
                         {
-                            mainList.Add(new MobilePhone(line.Split(',')[0], line.Split(',')[1],
+                            MainList.Add(new MobilePhone(line.Split(',')[0], line.Split(',')[1],
                             line.Split(',')[2], Convert.ToInt32(line.Split(',')[3]), Convert.ToInt32(line.Split(',')[4])));
                         }
                     }
@@ -245,45 +267,47 @@ namespace Phones_WPF
                 }
 
             }
-            return mainList;
+            return MainList;
         }
         public string CreateStringToOutputAllPhones(List<IPhone> mainList)
         {
+
             //Перебор масивa для вывода(склеивает строку)
-            string output = "All phones: \n";
+            Output1 = "All phones: \n";
             foreach (var a in mainList)
             {
                 var variableType = a.GetType();//определяет тип переменной в данной итерации и формирует соответствующую типу строку
                 if (variableType.Name == "MobilePhone")
                 {
                     MobilePhone i = (MobilePhone)a;
-                    output += $"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}\n";
+                    Output1 += $"Name: {i.Name} Firm: {i.Firm} Colour: {i.Colour} Memory capacity{i.MemoryCapacity}  Price: {i.Price}\n";
                 }
                 else
                 {
                     RadioPhone i = (RadioPhone)a;
-                    output += $"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.Answerphone}  Price: {i.Price}\n";
+                    Output1 += $"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.Answerphone}  Price: {i.Price}\n";
                 }
             }
-            return output;
+            return Output1;
         }
 
         public string CreateStringRadioPhonesWithAnswerphone(List<IPhone> mainList)
         {
-            string output = "Radio phones with Answerphone: \n";
+            Output2 = "Radio phones with Answerphone: \n";
+
             foreach (var a in mainList)
             {
                 var variableType = a.GetType();
                 if (variableType.Name == "RadioPhone") //отделает только радиотелефоны
                 {
                     RadioPhone i = (RadioPhone)a;
-                    if (i.Answerphone == true) // отделяет только радиотелефоны с автоответчиком
+                    if (i.Answerphone) // отделяет только радиотелефоны с автоответчиком
                     {
-                        output += $"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.Answerphone}  Price: {i.Price}\n";
+                        Output2 += $"Name: {i.Name} Firm: {i.Firm} Reach: {i.Reach} Anserphone: {i.Answerphone}  Price: {i.Price}\n";
                     }
                 }
             }
-            return output;
+            return Output2;
         }
 
         public string CreateStringWithAllPhonesSortedByPrice(IOrderedEnumerable<IPhone> sorted)

@@ -6,17 +6,18 @@
         xmlns:local="clr-namespace:Phones_WPF"
         mc:Ignorable="d"
 
-        Title="Phones" Height="250.89" Width="788.814" Background= "Silver" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Phones" Height="251" Width="789" Background= "Silver" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="0,0,12,260">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="431*"/>
             <ColumnDefinition Width="340*"/>
         </Grid.ColumnDefinitions>
         <Button Content="Зчитати дані" HorizontalAlignment="Left" Height="36" Margin="172,18,0,-54" VerticalAlignment="Top" Width="164" Grid.Column="1" Click="Button_Click"/>
-        <Button x:Name="button2" Content="Сортувати  усі телефони &#xD;&#xA;по ціні та записати у файл" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="172,91,0,-127" VerticalAlignment="Top" Width="164" Click="Button_Click_1"/>
-        <Button x:Name="button1" Content="Записати усі радіотелефони&#xD;&#xA;       із автовідповідачем" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="172,166,0,-202" VerticalAlignment="Top" Width="165" Click="Button_Click_2"/>
+        <Button x:Name="button2" Content="Сортувати  усі телефони &#xD;&#xA;по ціні та записати у файл" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="172,64,0,-100" VerticalAlignment="Top" Width="164" Click="Button_Click_1"/>
+        <Button x:Name="button1" Content="Записати усі радіотелефони&#xD;&#xA;       із автовідповідачем" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="172,109,0,-145" VerticalAlignment="Top" Width="164" Click="Button_Click_2"/>
         <TextBox x:Name="textBox1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="184" Margin="14,18,0,-202" TextWrapping="Wrap" VerticalAlignment="Top" Width="563" TextChanged="TextBox_TextChanged" VerticalScrollBarVisibility="Visible"/>
-        
+        <Button x:Name="button3" Content="Серіалізація" Grid.Column="1" HorizontalAlignment="Left" Height="36" Margin="172,163,0,-199" VerticalAlignment="Top" Width="164" Click="Button_Click_3"/>
+
 
 
     </Grid>
